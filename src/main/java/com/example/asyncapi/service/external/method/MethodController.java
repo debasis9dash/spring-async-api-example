@@ -1,8 +1,7 @@
-package com.example.asyncapi.service.external;
+package com.example.asyncapi.service.external.method;
 
-import com.example.asyncapi.service.internal.callback.AsyncCallbackResponse;
-import com.example.asyncapi.service.internal.callback.CallbackResponseRepository;
-import com.example.asyncapi.service.internal.callback.CallbackService;
+import com.example.asyncapi.service.internal.callback.CallbackResponse;
+import com.example.asyncapi.service.internal.callback.service.CallbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -15,9 +14,6 @@ import java.util.concurrent.Callable;
 
 @RestController
 public class MethodController {
-
-  @Autowired
-  private CallbackResponseRepository callbackResponseRepository;
 
   @Autowired
   private CallbackService callbackService;
@@ -33,14 +29,12 @@ public class MethodController {
   public WebAsyncTask<MethodResponse> method() {
 
     Callable<MethodResponse> callable = () -> {
-      String requestId = java.util.UUID.randomUUID().toString();
+      String requestId = callbackService.executeCallbackRequest(getPollingTimeout());
 
-      callbackService.queryBackend(requestId);
-
-      AsyncCallbackResponse callbackResponse = null;
+      CallbackResponse callbackResponse = null;
       do {
         Thread.sleep(getPollingTimeout());
-        callbackResponse = callbackResponseRepository.getResponse(requestId);
+        callbackResponse = callbackService.pollCompletedResponse(requestId);
       } while (callbackResponse == null);
 
       return MethodResponse.from(callbackResponse);

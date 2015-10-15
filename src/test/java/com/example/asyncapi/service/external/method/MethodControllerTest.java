@@ -1,9 +1,8 @@
-package com.example.asyncapi.service.external;
+package com.example.asyncapi.service.external.method;
 
 import com.example.asyncapi.AbstractControllerTest;
-import com.example.asyncapi.service.internal.callback.AsyncCallbackResponse;
-import com.example.asyncapi.service.internal.callback.CallbackResponseRepository;
-import com.example.asyncapi.service.internal.callback.CallbackService;
+import com.example.asyncapi.service.internal.callback.CallbackResponse;
+import com.example.asyncapi.service.internal.callback.service.CallbackService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -24,9 +23,6 @@ public class MethodControllerTest extends AbstractControllerTest {
   @Mock
   private CallbackService callbackService;
 
-  @Mock
-  private CallbackResponseRepository callbackResponseRepository;
-
   @InjectMocks
   private MethodController controller;
 
@@ -44,10 +40,10 @@ public class MethodControllerTest extends AbstractControllerTest {
   @Test
   public void shouldSucceedGetMethod() throws Exception {
     OffsetDateTime timestamp = OffsetDateTime.now();
-    AsyncCallbackResponse callbackResponse = new AsyncCallbackResponse(timestamp, new AsyncCallbackResponse.Response("id", "di"));
+    CallbackResponse callbackResponse = new CallbackResponse(timestamp, new CallbackResponse.Response("id", "di"));
 
     doReturn(callbackResponse)
-      .when(callbackResponseRepository).getResponse(anyString());
+      .when(callbackService).pollCompletedResponse(anyString());
 
     MvcResult mvcResult = mvc.perform(get("/service/method"))
       .andExpect(request().asyncStarted())

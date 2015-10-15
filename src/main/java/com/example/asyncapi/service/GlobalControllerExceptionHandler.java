@@ -1,5 +1,6 @@
 package com.example.asyncapi.service;
 
+import com.example.asyncapi.common.ApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,13 @@ public class GlobalControllerExceptionHandler extends ResponseEntityExceptionHan
   @ResponseBody
   public void handleException(Exception e) {
     LOG.error("Technical error", e);
+  }
+
+  @ExceptionHandler(ApplicationException.class)
+  @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+  @ResponseBody
+  public void handleException(ApplicationException e) {
+    LOG.error("Application error", e);
   }
 
 }

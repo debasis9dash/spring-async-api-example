@@ -1,0 +1,8 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" updateCheck="false">
+
+    <cache name="callbackResponses" eternal="false"
+           maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+           timeToIdleSeconds="60" timeToLiveSeconds="60"
+           memoryStoreEvictionPolicy="LRU" statistics="true" />
+</ehcache>

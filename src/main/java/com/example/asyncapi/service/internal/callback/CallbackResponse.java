@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AsyncCallbackResponse implements Serializable {
+public class CallbackResponse implements Serializable {
   private static final long serialVersionUID = 7526472295622776147L;
 
   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
@@ -17,8 +17,8 @@ public class AsyncCallbackResponse implements Serializable {
   private Response response;
 
   @JsonCreator
-  public AsyncCallbackResponse(@JsonProperty("timestamp") OffsetDateTime timestamp,
-                               @JsonProperty("response") Response response) {
+  public CallbackResponse(@JsonProperty("timestamp") OffsetDateTime timestamp,
+                          @JsonProperty("response") Response response) {
     this.timestamp = timestamp;
     this.response = response;
   }

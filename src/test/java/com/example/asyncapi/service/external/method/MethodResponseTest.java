@@ -1,6 +1,6 @@
-package com.example.asyncapi.service.external;
+package com.example.asyncapi.service.external.method;
 
-import com.example.asyncapi.service.internal.callback.AsyncCallbackResponse;
+import com.example.asyncapi.service.internal.callback.CallbackResponse;
 import org.junit.Test;
 
 import java.time.OffsetDateTime;
@@ -23,9 +23,9 @@ public class MethodResponseTest {
   @Test
   public void shouldConvertFromAsyncResponse() {
     OffsetDateTime timestamp = OffsetDateTime.now();
-    AsyncCallbackResponse asyncCallbackResponse = new AsyncCallbackResponse(timestamp, new AsyncCallbackResponse.Response("id", "data"));
+    CallbackResponse callbackResponse = new CallbackResponse(timestamp, new CallbackResponse.Response("id", "data"));
 
-    MethodResponse methodResponse = MethodResponse.from(asyncCallbackResponse);
+    MethodResponse methodResponse = MethodResponse.from(callbackResponse);
 
     assertThat(methodResponse.getTimestamp(), is(timestamp));
     assertThat(methodResponse.getResponse().getRequestId(), is("id"));

@@ -40,6 +40,8 @@ dependencies {
   compile 'org.apache.httpcomponents:httpclient:4.3.6'
   compile 'net.sf.ehcache:ehcache-core:2.6.9'
 
+  providedCompile 'com.google.code.findbugs:annotations:3.0.1'
+
   testCompile("junit:junit")
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
   testCompile group: 'org.mockito', name: 'mockito-core', version: '1.10.19'
@@ -82,6 +84,8 @@ war {
   }
 }
 
+sourceSets.test.resources.srcDirs += ["src/test/java", "src/test/resources"]
+
 checkstyle {
   toolVersion = "6.3"
   configFile = file("${rootProject.rootDir}/etc/checkstyle/checkstyle.xml")
@@ -89,6 +93,13 @@ checkstyle {
 
 findbugs {
   sourceSets = [sourceSets.main]
+}
+
+tasks.withType(FindBugs) {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
 }
 
 jacocoTestReport {

@@ -1,4 +1,4 @@
-package com.example.asyncapi.service.internal.callback;
+package com.example.asyncapi.service.internal.callback.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,9 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class CallbackService {
-
-  @Value("${asyncapi.service.internal.callbackServiceUrl}")
+class CallbackBackendService {
+  @Value("${asyncapi.service.internal.callback.url}")
   private String callbackServiceUrl;
 
   @Autowired
