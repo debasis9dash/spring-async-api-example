@@ -21,9 +21,10 @@
 * File -> import project
 * choose build.gradle
 
-### to unit tests from command line (CI server)
+### to unit tests and code coverage from command line (CI server)
  1. run `./gradlew test`
  1. check unit tests output from console or "build/reports/test/" folder
+ 1. test code coverage can be seen after running `./gradlew test jacocoTestReport` from "build/reports/jacoco/" directory
  
 ### Generating a WAR file
 To package the application as a (exuctable) WAR, type:
