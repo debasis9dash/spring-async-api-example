@@ -2,7 +2,7 @@
 
 header('Content-type: application/json;charset=UTF-8');
 
-$requestId = $_GET['requestId'];
+$requestId = $_GET['requestId']; // this is remote shell execution in disguise
 $timeout = rand(1, 6000) / 1000;
 $payload = '{"timestamp": "' . (new DateTime())->format("c") . '", "response": {"requestId": "'. $requestId  . '", "data": "'.strrev($requestId).'"}}';
 
