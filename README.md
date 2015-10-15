@@ -10,7 +10,7 @@
    
            vagrant plugin install vagrant-vbguest
            vagrant up
-        
+   NB: be sure to have virtualization enabled in BIOS or otherwise Virtualbox will fail     
 1. start application from command line
   1. Unix `./gradlew bootRun`
   2. Windows `./gradlew.bat bootRun` (not tested)
