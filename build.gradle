@@ -1,0 +1,104 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version")
+  }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'spring-boot'
+apply plugin: 'findbugs'
+apply plugin: 'checkstyle'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version) {
+    exclude(module: "spring-boot-starter-tomcat")
+  }
+  compile(group: 'org.springframework', name: 'spring-context-support') {
+    exclude(module: 'quartz')
+  }
+
+  compile group: 'org.springframework.boot', name: 'spring-boot-actuator', version: spring_boot_version
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: spring_boot_version
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: spring_boot_version
+
+  //TODO: this should not be needed really. It is a quick workround for "java.lang.ClassNotFoundException: org.springframework.security.config.http.SessionCreationPolicy"
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: spring_boot_version
+
+  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jackson_version
+
+  compile 'org.apache.httpcomponents:httpclient:4.3.6'
+  compile 'net.sf.ehcache:ehcache-core:2.6.9'
+
+  testCompile("junit:junit")
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
+  testCompile group: 'org.mockito', name: 'mockito-core', version: '1.10.19'
+  testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: '0.9.1'
+}
+
+bootRepackage {
+  mainClass = 'com.example.asyncapi.Application'
+}
+
+springBoot {
+  mainClass = 'com.example.asyncapi.Application'
+}
+
+// http://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#howto-remote-debug-gradle-run
+applicationDefaultJvmArgs = [
+  "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+]
+
+
+version = "0.0.1"
+description = 'Async callback methods example application'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+
+war {
+  baseName = 'asyncapi'
+  version = project.version
+  doFirst {
+    def buildDate = new Date()
+    manifest {
+      attributes(
+        'Created-By': System.properties['java.version'] + " (" + System.properties['java.vendor'] + " " + System.getProperty("java.vm.version") + ")",
+        'Built-Date': buildDate,
+        'Implementation-Version': project.version,
+      )
+    }
+  }
+}
+
+checkstyle {
+  toolVersion = "6.3"
+  configFile = file("${rootProject.rootDir}/etc/checkstyle/checkstyle.xml")
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.7'
+}
+
+idea {
+  project {
+    jdkName = "1.8"
+    languageLevel = "1.8"
+  }
+
+  module {
+    downloadJavadoc = true
+    downloadSources = true
+    excludeDirs += files([buildDir, "logs", ".gradle", ".idea"])
+  }
+}

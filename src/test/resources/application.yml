@@ -1,0 +1,28 @@
+server:
+    port: 10344
+    address: localhost
+
+server.context-path:
+
+# Disable the spring security default configuration from spring-boot-actuator
+management.security.enabled: false
+security.basic.enabled: false
+
+metrics:
+    jmx.enabled: false
+
+
+asyncapi:
+    restHttpPoolMaxTotal: 30
+    restHttpPoolMaxPerRoute: 20
+    restHttpPoolTimeout: 10000
+    restHttpTimeout: 10000
+
+    service:
+      timeout: 5000
+      pollingTimeout: 100
+
+      internal:
+        callbackServiceUrl: http://localhost:4080/backend-service/method
+
+    cacheConfName: ehcache.xml

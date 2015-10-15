@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+
+    <!-- Spring boot sets LOG_PATH and LOG_FILE properties from application config  -->
+    <property name="LOGS_DIR" value="${LOG_PATH:-logs}"/>
+    <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}application.log}"/>
+    <property name="ENCODER_PATTERN" value="%d{ISO8601} %-5p %c{1} - %m%n"/>
+    <property name="ENCODER_PATTERN_COLORED" value="%d{ISO8601} %highlight(%-5p) %c{1} - %m%n"/>
+    <property name="MAX_HISTORY" value="30"/>
+    <property name="ASYNC_QUEUE_SIZE" value="512"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>${ENCODER_PATTERN_COLORED}</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_DIR}/${LOG_FILE}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_DIR}/${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>${ENCODER_PATTERN}</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>${ASYNC_QUEUE_SIZE}</queueSize>
+        <appender-ref ref="FILE"/>
+    </appender>
+
+
+    <logger name="ch.qos.logback" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.springframework.cache" level="WARN"/>
+
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <logger name="com.example.asyncapi" level="DEBUG"/>
+
+    <root level="INFO" >
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
