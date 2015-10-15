@@ -86,6 +86,10 @@ checkstyle {
   configFile = file("${rootProject.rootDir}/etc/checkstyle/checkstyle.xml")
 }
 
+findbugs {
+  sourceSets = [sourceSets.main]
+}
+
 task wrapper(type: Wrapper) {
   gradleVersion = '2.7'
 }
