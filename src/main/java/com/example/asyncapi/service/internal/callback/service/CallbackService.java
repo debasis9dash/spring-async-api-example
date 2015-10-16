@@ -27,6 +27,7 @@ public class CallbackService {
   }
 
   public String executeCallbackRequest(long timeToLiveMillis) {
+    //TODO change API so that requestId is given by backend. usually in real world this kind of "sessionId" (our requestId) creation authority is in other system (backend) but there are exceptions like out little example.
     String requestId = java.util.UUID.randomUUID().toString();
     OffsetDateTime expiresAt = OffsetDateTime.now().plusNanos(timeToLiveMillis * 1000);
 
